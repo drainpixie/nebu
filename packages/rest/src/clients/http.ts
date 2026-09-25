@@ -1,4 +1,4 @@
-import type { Endpoint } from "../endpoint.js";
+import type { Endpoint, InferEndpointArgs, InferEndpointResponse } from "../endpoint.js";
 import { ErrorResponse } from "@matrix-nebu/types";
 import { type } from "arktype";
 
@@ -14,10 +14,10 @@ export class HttpClient {
 		this.bearerToken = token;
 	}
 
-	async request<Path, Query, Req, Resp, E extends Endpoint<Path, Query, Req, Resp>>(
+	async request<E extends Endpoint>(
 		endpoint: E,
-		params: Path & Query & Req,
-	): Promise<Resp> {
+		params: InferEndpointArgs<E>,
+	): Promise<InferEndpointResponse<E>> {
 		let request = endpoint.toRequest(params);
 
 		const requestOptions: RequestInit = {
@@ -71,7 +71,7 @@ export class HttpClient {
 		if (responseBody instanceof type.errors) {
 			throw new Error(`Got unexpected response body: ${JSON.stringify(json)}`);
 		} else {
-			return responseBody as Resp;
+			return responseBody as InferEndpointResponse<E>;
 		}
 	}
 }

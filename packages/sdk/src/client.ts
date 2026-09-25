@@ -32,7 +32,7 @@ export class Client {
 	 * Ask the server for the supported Matrix versions.
 	 * @returns the server's supported Matrix versions.
 	 */
-	async getVersions(): Promise<rest.EndpointResponseBody<typeof rest.GetVersions>> {
+	async getVersions(): Promise<rest.InferEndpointResponse<typeof rest.GetVersions>> {
 		return this.rest.request(rest.GetVersions, {});
 	}
 
@@ -40,7 +40,7 @@ export class Client {
 	 * Ask the server for our account's capabilities. Requires authentication.
 	 * @returns the server's capabilities for the authenticated user.
 	 */
-	async getCapabilities(): Promise<rest.EndpointResponseBody<typeof rest.GetCapabilities>> {
+	async getCapabilities(): Promise<rest.InferEndpointResponse<typeof rest.GetCapabilities>> {
 		return this.rest.request(rest.GetCapabilities, {});
 	}
 }
