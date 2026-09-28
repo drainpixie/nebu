@@ -226,6 +226,13 @@ export class Endpoint<
 
 		// Clean up the body of keys we previously used
 		let cleanBody = this.request?.onUndeclaredKey("delete").assert(params) as never;
+		// Some endpoints (like the message sending) have arbitrary [string]: any keys,
+		// so we explicitly delete the path and query keys from the body if they exist, to avoid sending them in the request body.
+		for (const key of [...this.pathKeys, ...this.queryKeys]) {
+			if (cleanBody && key in cleanBody) {
+				delete cleanBody[key as keyof typeof cleanBody];
+			}
+		}
 
 		return {
 			method: this.method,
