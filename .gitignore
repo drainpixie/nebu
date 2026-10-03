@@ -1,6 +1,6 @@
 /.direnv
 /.envrc
-/docs
+/typedoc-docs
 node_modules/
 dist/
 *.tsbuildinfo
